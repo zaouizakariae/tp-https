@@ -21,7 +21,21 @@ openssl s_client -connect 10.16.10.80:443 -prexit -showcerts -state -status -tls
 ![image](https://github.com/user-attachments/assets/d2708b2e-4252-4064-92cb-855dea83144d)
 
 ![image](https://github.com/user-attachments/assets/33ff74d7-f62b-4b41-9435-6a082ed342ac)
-![Uploading image.png…]()
+
+![image](https://github.com/user-attachments/assets/a5b36c3f-bf37-4fd7-9531-7ffe26b8b8f1)
+
+![image](https://github.com/user-attachments/assets/1acd43e7-b61e-4760-94aa-e64ff4010eef)
+
+![image](https://github.com/user-attachments/assets/04a1ae51-d6df-4b23-b06c-14c55ccfa221)
+
+![image](https://github.com/user-attachments/assets/1507b008-0650-462a-97e2-eb4698d0a2ef)
+
+
+
+
+
+
+
 
 
 
