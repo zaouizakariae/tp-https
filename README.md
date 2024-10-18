@@ -1,11 +1,55 @@
 # tp-https
+# Environnement de TP
+
+installation de vagrant deja faite sur la machine de l'universite
+
+# Documentation
+
+on utilise le box fournit par notre professeur en utilisant la commande suivante :
+
+```CMD
+  vagrant box add /chemin/vers/fsi-tp.box --name "fsi-tp"
+```  
+
+# Audit de Site Web Sécurité
+
+on commence par telecharger l archive
+
+```cmd
+wget https://pageperso.lis-lab.fr/emmanuel.godard/enseignement/securite-des-infrastructures/04_https/https.zip
+```
 
 ![image](https://github.com/user-attachments/assets/56059b18-f31e-4138-97c4-84316c4c51a2)
 
+on demarre l'ensemble des machine en utilisant la commande suivante :
+
+```cmd
+./startAll.sh
+```
+
+en attendant on demmarre l amchine **Client** :
+
+```cmd
+./demarreVM.sh client
+```
+
 ![image](https://github.com/user-attachments/assets/73828400-a25b-4ef6-a534-c7320c32be0e)
+
+maintenant qu on a demarrer la machine client on doit changer l'add ip du eth1 et innstaller un browser afin d acceder aux sites webs:
 
 ![image](https://github.com/user-attachments/assets/a90dcdd5-05a5-40c5-a1a0-5407590b8d20)
 
+# Audit en boîte noire
+
+tout d'abord on doit s'assurer que toutes les machines virtuelles (VM) et l'environnement Vagrant sont en cours d'exécution. on va essayer de pinger les sites web (10.16.10.80 à 10.16.10.84).
+
+```
+ping 10.16.10.811
+```
+
+le ping n'a pas reussi pour les quatre sites au debut . je me suis connecter en utilisant ssh aux serveurs webs 3 et 4 afin de donner des adds ip aux interfaces reseaux.
+
+maintenant on passe a l audit
 
 ![image](https://github.com/user-attachments/assets/f6d8f733-3a52-4ee5-9445-2d141df48088)
 
