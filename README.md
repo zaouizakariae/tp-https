@@ -1,4 +1,5 @@
 # tp-https
+# Nom & Prenom : Zakariae Zaoui
 # Environnement de TP
 
 installation de vagrant deja faite sur la machine de l'universite
@@ -102,6 +103,9 @@ pour web1 :
 
 pour web2 : 
 
+![image](https://github.com/user-attachments/assets/d2708b2e-4252-4064-92cb-855dea83144d)
+
+
 - Certificat expiré et autosigne : Le certificat doit être renouvelé ou mis à jour, car il a expiré en 2021.
 - OCSP Stapling : Il est recommandé de configurer l'OCSP stapling pour une meilleure vérification de l'état du certificat.
 - ALPN support : l implementation de ALPN (Application-Layer Protocol Negotiation) peut ameliorer la performance et la compatibilite avec les clients car il support les protocoles comme HTTP/2.
@@ -120,9 +124,6 @@ Détails du Certificat :
 pour web3 :
 
 - Certificat Expiré : Le certificat a expiré le 12 octobre 2021. Les navigateurs modernes afficheront des avertissements de sécurité, réduisant la confiance des utilisateurs. Vulnérabilité potentielle aux attaques de type "homme du milieu" (MITM).
-
-![image](https://github.com/user-attachments/assets/d2708b2e-4252-4064-92cb-855dea83144d)
-
 - Certificat Auto-Signé : Le certificat est auto-signé par "godard TP" au lieu d'être émis par une autorité de certification reconnue. Manque de confiance dans l'identité du serveur, vulnérabilité aux attaques MITM.
 - Chaîne de Confiance Incomplète : Impossible d'obtenir le certificat de l'autorité locale (erreur num=20). Les clients ne peuvent pas vérifier l'authenticité du certificat, ce qui peut conduire à des avertissements de sécurité.
 - Configuration du Serveur : Le serveur utilise TLS 1.3 avec un chiffrement fort (TLS_AES_256_GCM_SHA384), ce qui est positif.
@@ -155,12 +156,57 @@ cd testssl.sh
 
 ![image](https://github.com/user-attachments/assets/c8a2bac6-dd4c-4781-b122-dd391e2fea79)
 
+pour web 1 :#
+
+![image](https://github.com/user-attachments/assets/54b3023f-39ea-46be-a461-8978fbdd6357)
+
+
+- Mettre à jour le certificat :
+  - Le certificat est expiré et auto-signé.
+- Désactiver les protocoles obsolètes :
+  - il faut désactivez TLS 1.0 et TLS 1.1 pour améliorer la sécurité et éviter les vulnérabilités liées aux anciens protocoles.
+- Renforcer les suites de chiffrement :
+  - Supprimez les chiffrements CBC obsolètes et faibles comme AES256-SHA et CAMELLIA256-SHA pour prévenir les attaques.
+- Mettre en œuvre l'OCSP :
+  - Activez l'OCSP stapling pour améliorer la vérification de la révocation des certificats.
+ 
+pour web 2 :
+
+- Certificat expiré :
+  - Le certificat du serveur a expiré en 2021. Il s'agit d'un problème critique, car un certificat expiré compromet la confiance et rend le serveur vulnérable aux attaques MITM (Man-in-the-Middle).
+- Certificat auto-signé :
+  - Le certificat est auto-signé par godard TP, ce qui n'est pas reconnu par défaut sur aucun système. 
+- Pas de support OCSP :
+  - Le serveur ne fournit pas de réponses OCSP, ce qui signifie que les clients ne peuvent pas vérifier en temps réel l'état de révocation du certificat.
+- Configuration sécurisée :
+  - TLSv1.3 est pris en charge avec des chiffrements puissants, garantissant une communication sécurisée.
+L'échange de clés X25519 offre le secret de transmission (forward secrecy), ce qui protège les sessions passées même en cas de compromission de la clé privée du serveur.
+- Pas de négociation ALPN :
+  - Le serveur ne négocie pas l'ALPN (Application-Layer Protocol Negotiation), ce qui signifie qu'il ne prend pas en charge les protocoles plus récents comme HTTP/2.
+ 
+pour web3 :
+
+- Protocole supporté :
+  - TLS 1.2 et TLS 1.3 sont offerts. SSLv2, SSLv3, TLS 1.0, et TLS 1.1 ne sont pas offerts, ce qui est conforme aux bonnes pratiques de sécurité.
+- Suites de chiffrement :
+  - Le serveur propose plusieurs suites de chiffrement modernes et sécurisées, notamment TLS_AES_256_GCM_SHA384, TLS_CHACHA20_POLY1305_SHA256, et des suites ECDHE-RSA avec chiffrement AES et GCM, garantissant une bonne confidentialité (Forward Secrecy).
+- Certificat :
+  - Le certificat est expiré depuis le 12 octobre 2021. De plus, il y a une incohérence dans la chaîne de confiance et le nom de domaine ne correspond pas , ce qui entraîne des avertissements dans les navigateurs.
+
+- Extensions TLS : Le serveur supporte des extensions modernes telles que ALPN/HTTP2, renégociation sécurisée, session tickets et encrypt-then-mac.
+- Vulnérabilités : Le serveur n'est pas vulnérable à des failles majeures.
+
+pour web 4 :
+
+- Protocole supporté : TLS 1.2 et TLS 1.3 sont offerts, tandis que SSLv2, SSLv3, TLS 1.0, et TLS 1.1 ne sont pas supportés, conformément aux meilleures pratiques en matière de sécurité.
+- Suites de chiffrement : Le serveur propose des suites de chiffrement modernes et sécurisées, incluant TLS_AES_256_GCM_SHA384, TLS_CHACHA20_POLY1305_SHA256, ainsi que des suites ECDHE-RSA offrant la confidentialité persistante (Forward Secrecy).
+- Certificat : Le certificat est valide jusqu'au 8 octobre 2025, mais présente des problèmes :
+
 # Audit en boîte blanche
 
 
 
 
-![image](https://github.com/user-attachments/assets/54b3023f-39ea-46be-a461-8978fbdd6357)
 
 
 on analyse les fichiers service.conf
@@ -269,6 +315,7 @@ Serveur web1 :
 - Pas de redirection automatique de HTTP vers HTTPS, permettant potentiellement des connexions non sécurisées.
 - Absence de configuration de cipher suite, pouvant mener à l'utilisation de chiffrements faibles.
 
+![image](https://github.com/user-attachments/assets/95b9af81-cdfb-487d-a456-06a015891f5c)
 
 Serveur web2.nuage :
 
@@ -351,16 +398,6 @@ Serveur web4.nuage :
 </VirtualHost>
 ```
 
-
-![image](https://github.com/user-attachments/assets/33ff74d7-f62b-4b41-9435-6a082ed342ac)
-
-![image](https://github.com/user-attachments/assets/a5b36c3f-bf37-4fd7-9531-7ffe26b8b8f1)
-
-![image](https://github.com/user-attachments/assets/1acd43e7-b61e-4760-94aa-e64ff4010eef)
-
-![image](https://github.com/user-attachments/assets/04a1ae51-d6df-4b23-b06c-14c55ccfa221)
-
-![image](https://github.com/user-attachments/assets/1507b008-0650-462a-97e2-eb4698d0a2ef)
 
 
 
